@@ -58,6 +58,62 @@ class Tree {
     return node;
   }
 
+  // insert a node with given value
+  insert(value) {
+    this.root = this.insertRec(this.root, value);
+  }
+
+  insertRec(root, value) {
+    if (root === null) return new Node(value);
+
+    if (value < root.data) {
+      root.left = this.insertRec(root.left, value);
+    } else if (value > root.data) {
+      root.right = this.insertRec(root.right, value);
+    }
+
+    return root;
+  }
+
+  // delete a node with given value
+  deleteItem(value) {
+    this.root = this.deleteRec(this.root, value);
+  }
+
+  deleteRec(root, value) {
+    if (root === null) return null;
+
+    if (value < root.data) {
+      root.left = this.deleteRec(root.left, value);
+    } else if (value > root.data) {
+      root.right = this.deleteRec(root.right, value);
+    } else {
+      // Case 1: Leaf node (no children)
+      if (root.left === null && root.right === null) return null;
+      // Case 2: One child (left or right)
+      if (root.left === null) {
+        return root.right;
+      } else if (root.right === null) {
+        return root.left;
+      }
+      // Case 3: Two children
+      const minValue = this.findMin(root.right);
+      root.data = minValue;
+      root.right = this.deleteRec(root.right, minValue);
+    }
+
+    return root;
+  }
+
+  findMin(root) {
+    let current = root;
+    while (current.left !== null) {
+      current = current.left;
+    }
+    
+    return current.data;
+  }
+
 }
 
 // Pretty Print
@@ -77,4 +133,13 @@ function prettyPrint(node, prefix = "", isLeft = true) {
 const dataArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const tree = new Tree(dataArray);
 
+console.log("\nBalanced Binary Search Tree:\n");
+prettyPrint(tree.root);
+
+console.log("\nWith insertion:\n");
+tree.insert(50);
+prettyPrint(tree.root);
+
+console.log("\nWith deletion\n");
+tree.deleteItem(23);
 prettyPrint(tree.root);
