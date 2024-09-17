@@ -114,6 +114,21 @@ class Tree {
     return current.data;
   }
 
+  // find(value) returns the node with the given value.
+  find(value) {
+    return this.findRec(this.root, value);
+  }
+
+  findRec(root, value) {
+    if (root === null || root.data === value) return root;
+
+    if (value < root.data) {
+      return this.findRec(root.left, value);
+    } else {
+      return this.findRec(root.right, value);
+    }
+  }
+
 }
 
 // Pretty Print
@@ -130,16 +145,35 @@ function prettyPrint(node, prefix = "", isLeft = true) {
   }
 }
 
+// Tests
 const dataArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const tree = new Tree(dataArray);
 
+// Balance Node Tree
 console.log("\nBalanced Binary Search Tree:\n");
 prettyPrint(tree.root);
 
+// Tree node Insertion
 console.log("\nWith insertion:\n");
 tree.insert(50);
 prettyPrint(tree.root);
 
+// Tree node Deletion
 console.log("\nWith deletion\n");
 tree.deleteItem(23);
 prettyPrint(tree.root);
+
+// Find Node
+const found = tree.find(7);
+if (found !== null) {
+  console.log(`\nFound node: ${found.data}\n`);
+} else {
+  console.log("\nNode not found.\n");
+}
+
+const notFound = tree.find(100);
+if (notFound !== null) {
+  console.log(`\nFound node: ${notFound.data}\n`);
+} else {
+  console.log("\nNode not found.\n");
+}
