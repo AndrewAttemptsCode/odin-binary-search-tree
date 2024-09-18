@@ -129,6 +129,100 @@ class Tree {
     }
   }
 
+  // levelOrder(callback) function that accepts
+  // a callback function as its parameter.
+
+  levelOrder(callback) {
+    if (typeof callback !== 'function') throw new Error('A Callback function is required.');
+
+    const queue = [];
+
+    if (this.root !== null) queue.push(this.root);
+
+    while (queue.length > 0) {
+      const current = queue.shift();
+      callback(current);
+
+      if (current.left !== null) queue.push(current.left);
+      if (current.right !== null) queue.push(current.right);
+    }
+  }
+
+  //inOrder(callback) function that accepts 
+  // a callback function as its parameter.
+
+  inOrder(callback) {
+    if (typeof callback !== 'function') throw new Error('A callback function is required');
+
+    const stack = [];
+    let current = this.root;
+
+    while (stack.length > 0 || current !== null) {
+
+      while (current !== null) {
+        stack.push(current);
+        current = current.left;
+      }
+
+      current = stack.pop();
+      callback(current);
+      current = current.right;
+    }
+  }
+
+  //preOrder(callback) function that accepts 
+  // a callback function as its parameter.
+
+  preOrder(callback) {
+    if (typeof callback !== 'callback') throw new Error('A callback function is required.');
+
+    const stack = [];
+    if (this.root !== null) stack.push(this.root);
+
+    while (stack.length > 0) {
+      const current = stack.pop();
+      callback(current);
+    }
+
+    if (current.right !== null) stack.push(current.right);
+    if (current.left !== null) stack.push(current.left);
+  }
+
+  //postOrder(callback) function that accepts 
+  // a callback function as its parameter.
+
+  postOrder(callback) {
+    if (typeof callback !== 'function') throw new Error('A callback function is required.');
+
+    const stack1 = [];
+    const stack2 = [];
+
+    if (this.root !== null) stack1.push(this.root);
+
+    while (stack1.length > 0) {
+      const current = stack1.pop();
+      stack2.push(current);
+
+      if (current.left !== null) stack1.push(current.left);
+      if (current.right !== null) stack1.push(current.right);
+    }
+
+    while (stack2.length > 0) {
+      const node = stack2.pop();
+      callback(node);
+    }
+  }
+
+  printInOrder() {
+    const result = [];
+
+    this.inOrder((node) => {
+      result.push(node.data);
+    });
+
+    return result;
+  }
+
 }
 
 // Pretty Print
@@ -177,3 +271,5 @@ if (notFound !== null) {
 } else {
   console.log("\nNode not found.\n");
 }
+
+console.log(tree.printInOrder());
