@@ -223,6 +223,16 @@ class Tree {
     return result;
   }
 
+  // height(node) function that returns the given node’s height.
+  height(node) {
+    if (node === null) return -1;
+
+    const leftHeight = this.height(node.left);
+    const rightHeight = this.height(node.right);
+
+    return 1 + Math.max(leftHeight, rightHeight);
+  }
+
 }
 
 // Pretty Print
@@ -272,4 +282,8 @@ if (notFound !== null) {
   console.log("\nNode not found.\n");
 }
 
+// Print result of array in an ordered array
 console.log(tree.printInOrder());
+
+// Print heigh of given node
+console.log(tree.height(tree.root));
