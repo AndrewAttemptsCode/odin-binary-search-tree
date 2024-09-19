@@ -174,7 +174,7 @@ class Tree {
   // a callback function as its parameter.
 
   preOrder(callback) {
-    if (typeof callback !== 'callback') throw new Error('A callback function is required.');
+    if (typeof callback !== 'function') throw new Error('A callback function is required.');
 
     const stack = [];
     if (this.root !== null) stack.push(this.root);
@@ -223,7 +223,7 @@ class Tree {
     return result;
   }
 
-  // height(node) function that returns the given node’s height.
+  // height(node) function that returns the given node’s height to a leaf node.
   height(node) {
     if (node === null) return -1;
 
@@ -232,6 +232,29 @@ class Tree {
 
     return 1 + Math.max(leftHeight, rightHeight);
   }
+
+  // depth(node) function that returns the given node’s depth to the root node.
+  depth(node) {
+    if (!this.root || !node) return -1; // Return -1 if root or node is invalid
+    let current = this.root;
+    let depthCount = 0;
+
+    // Traverse the tree to find the node
+    while (current !== null) {
+        if (node.data === current.data) {
+            return depthCount; // Return the depth when node is found
+        } else if (node.data < current.data) {
+            current = current.left; // Go left if node is smaller
+        } else {
+            current = current.right; // Go right if node is larger
+        }
+        depthCount++;
+    }
+
+    // If the node was not found in the tree, return -1
+    return -1;
+}
+
 
 }
 
@@ -287,3 +310,6 @@ console.log(tree.printInOrder());
 
 // Print heigh of given node
 console.log(tree.height(tree.root));
+
+// Print depth of given node
+console.log(tree.depth(tree.root));
